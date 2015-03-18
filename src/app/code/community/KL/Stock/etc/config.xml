@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <KL_Stock>
+            <version>0.0.1</version>
+        </KL_Stock>
+    </modules>
+    <global>
+        <models>
+            <kl_stock>
+                <class>KL_Stock_Model</class>
+            </kl_stock>
+        </models>
+        <helpers>
+            <rulemailer>
+                <class>KL_Stock_Helper</class>
+            </rulemailer>
+        </helpers>
+        <events>
+            <time_to_fix_stock_status_was_reached>
+                <observers>
+                    <fix_stock_status>
+                        <class>KL_Stock_Handlers_StockStatus</class>
+                        <method>whenItsTimeToFixStockStatuses</method>
+                    </fix_stock_status>
+                </observers>
+            </time_to_fix_stock_status_was_reached>
+        </events>
+    </global>
+    <crontab>
+        <jobs>
+            <kl_stock>
+                <schedule>
+                    <cron_expr>*/30 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>kl_stock/cron::fire</model>
+                </run>
+            </kl_stock>
+        </jobs>
+    </crontab>
+</config>

@@ -1,0 +1,24 @@
+{
+    "name": "karlssonlord/stock",
+    "description": "This module help managing of products stock status flag",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.38"
+    },
+    "authors": [
+        {
+            "name": "David Wickström",
+            "email": "davidwickstrom@gmail.com"
+        }
+    ],
+    "require": {
+        "mockery/mockery": "0.9.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "": [
+                "src/app",
+                "src/app/code/community"
+            ]
+        }
+    }
+}
