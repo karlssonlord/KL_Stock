@@ -6,23 +6,23 @@
         </KL_Stock>
     </modules>
     <global>
-        <models>
-            <kl_stock>
-                <class>KL_Stock_Model</class>
-            </kl_stock>
-        </models>
         <helpers>
             <rulemailer>
                 <class>KL_Stock_Helper</class>
             </rulemailer>
         </helpers>
+        <models>
+            <kl_stock>
+                <class>KL_Stock_Model</class>
+            </kl_stock>
+        </models>
         <events>
             <time_to_fix_stock_status_was_reached>
                 <observers>
-                    <fix_stock_status>
+                    <time_to_fix_stock_status_was_reached>
                         <class>KL_Stock_Handlers_StockStatus</class>
                         <method>whenItsTimeToFixStockStatuses</method>
-                    </fix_stock_status>
+                    </time_to_fix_stock_status_was_reached>
                 </observers>
             </time_to_fix_stock_status_was_reached>
         </events>
