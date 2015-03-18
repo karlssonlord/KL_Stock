@@ -1,0 +1,23 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+cache:
+  directories:
+  - vendor/
+
+branches:
+    only:
+        - master
+
+install:
+    - composer install --prefer-source --no-interaction
+
+script:
+    - vendor/bin/phpunit
+
+notifications:
+  flowdock:
+    secure: a99965ce11998f1e3796bb00ddb0dedd
