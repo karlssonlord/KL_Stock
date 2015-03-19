@@ -16,16 +16,6 @@
                 <class>KL_Stock_Model</class>
             </kl_stock>
         </models>
-        <events>
-            <time_to_fix_stock_status_was_reached>
-                <observers>
-                    <time_to_fix_stock_status_was_reached>
-                        <class>KL_Stock_Handlers_StockStatus</class>
-                        <method>whenItsTimeToFixStockStatuses</method>
-                    </time_to_fix_stock_status_was_reached>
-                </observers>
-            </time_to_fix_stock_status_was_reached>
-        </events>
     </global>
     <crontab>
         <jobs>
@@ -34,7 +24,7 @@
                     <cron_expr>*/30 * * * *</cron_expr>
                 </schedule>
                 <run>
-                    <model>kl_stock/cron::fire</model>
+                    <model>kl_stock/handlers_stockStatusHandler::whenItsTimeToFixStockStatuses</model>
                 </run>
             </kl_stock>
         </jobs>

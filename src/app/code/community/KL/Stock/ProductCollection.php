@@ -28,9 +28,9 @@ class KL_Stock_ProductCollection
     {
         return $this->product
             ->getCollection()
-            ->addAttributeToFilter('product_type', 'configurable')
+            ->addAttributeToFilter('type_id', 'configurable')
             ->addAttributeToFilter('inventory_stock_availability', 0)
-            ->addAttributeToSelect('is_in_stock');
+            ->addAttributeToSelect('*');
     }
 
     /**
@@ -40,9 +40,9 @@ class KL_Stock_ProductCollection
     {
         return $this->product
             ->getCollection()
-            ->addAttributeToFilter('product_type', 'simple')
+            ->addAttributeToFilter('type_id', 'simple')
             ->addAttributeToFilter('inventory_stock_availability', 0)
             ->addAttributeToFilter('inventory_qty', array('gt' => 0))
-            ->addAttributeToSelect('is_in_stock');
+            ->addAttributeToSelect('*');
     }
 } 
