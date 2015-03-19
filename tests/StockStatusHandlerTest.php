@@ -21,10 +21,8 @@ class StockStatusHandlerTest extends PHPUnit_Framework_TestCase
         $collectionMock->shouldReceive('getSimpleProducts')->once()->andReturn($productsCollectionMock);
         $collectionMock->shouldReceive('getConfigurableProducts')->once()->andReturn($productsCollectionMock);
 
-        $handler = new KL_Stock_Handlers_StockStatusHandler(null, $collectionMock);
+        $handler = new KL_Stock_Model_Handlers_StockStatusHandler(null, $collectionMock , $stockItemMock);
         $return = $handler->whenItsTimeToFixStockStatuses();
-
-        $this->assertInstanceOf('KL_Stock_Handlers_StockStatusHandler', $return);
     }
 
 }
