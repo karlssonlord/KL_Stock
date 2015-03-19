@@ -70,7 +70,7 @@ class KL_Stock_Model_Handlers_StockStatusHandler
         foreach ($this->collection->getConfigurableProducts() as $product) {
             $childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null, $product);
             foreach ($childProducts as $childProduct) {
-                $childStockItem = $childProduct->getStockItem();
+                $childStockItem = $this->stockItem->loadByProduct($childProduct);
                 if ($childStockItem->getQty() > 0) {
                     $this->correctStockStatus($product);
                 }
