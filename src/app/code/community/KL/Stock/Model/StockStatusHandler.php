@@ -30,7 +30,7 @@ class KL_Stock_Model_StockStatusHandler
             $stockItem = $simpleProduct->load($simpleProduct->getId())->getStockItem();
             if ($this->statusIsNotInStock($stockItem) and $stockItem->getQty() > 0) {
                 $this->correctStockStatusFor($stockItem);
-                Mage::log($simpleProduct->getName() . ' had its status updated', null, 'kl_stock.log', true)
+                Mage::log($simpleProduct->getName() . ' had its status updated', null, 'kl_stock.log', true);
             }
         }
         return $this;
