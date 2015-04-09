@@ -14,8 +14,20 @@ class KL_Stock_Model_StockStatusHandler
     public function whenItsTimeToFixStockStatuses()
     {
         return $this
-            ->fixProducts()
+            ->fixSimpleProducts()
+            ->fixConfigurableProducts()
             ;
+    }
+
+    private function fixSimpleProducts()
+    {
+        foreach ($this->getSimpleProducts() as $simpleProduct) {
+            $stockItem = $simpleProduct->load($simpleProduct->getId())->getStockItem();
+            if ($this->statusIsNotInStock($stockItem) and $stockItem->getQty() > 0) {
+                $this->correctStockStatusFor($stockItem);
+            }
+        }
+        return $this;
     }
 
     /**
@@ -23,7 +35,7 @@ class KL_Stock_Model_StockStatusHandler
      *
      * @return $this
      */
-    private function fixProducts()
+    private function fixConfigurableProducts()
     {
         // Run through all configurable products that have stock status: is_in_stock 0
         foreach ($this->getConfigurableProducts() as $product) {
@@ -102,6 +114,15 @@ class KL_Stock_Model_StockStatusHandler
         $stockItem = $simpleProduct->getStockItem();
         if ($stockItem->getIsInStock()) return true;
         return false;
+    }
+
+    private function getSimpleProducts()
+    {
+        return Mage::getModel('catalog/product')
+            ->getCollection()
+            ->addAttributeToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)
+            ->addAttributeToSelect('type_id')
+            ;
     }
 
 }
