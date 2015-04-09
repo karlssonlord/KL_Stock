@@ -3,7 +3,7 @@
 return array(
     'catalog/product' => array(
         'attributes' => array(
-            'sku' => $this->faker->ean,
+            'sku' => $this->faker->domainWord,
             'attribute_set_id' => 4,
             'name' => $this->faker->name,
             'weight' => 2,
