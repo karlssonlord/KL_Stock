@@ -21,10 +21,10 @@
         <jobs>
             <kl_stock>
                 <schedule>
-                    <cron_expr>*/30 * * * *</cron_expr>
+                    <cron_expr>*/15 * * * *</cron_expr>
                 </schedule>
                 <run>
-                    <model>kl_stock/handlers_stockStatusHandler::whenItsTimeToFixStockStatuses</model>
+                    <model>kl_stock/stockStatusHandler::whenItsTimeToFixStockStatuses</model>
                 </run>
             </kl_stock>
         </jobs>

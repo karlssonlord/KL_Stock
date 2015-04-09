@@ -67,7 +67,7 @@ class StockStatusHandlerTest extends PHPUnit_Framework_TestCase
         /**
          *  Now run the machine to help correct the "In Stock"-status for the configurable product
          */
-        (new KL_Stock_Model_Handlers_StockStatusHandler)->whenItsTimeToFixStockStatuses();
+        (new KL_Stock_Model_StockStatusHandler)->whenItsTimeToFixStockStatuses();
 
         $this->assertEquals(1, $product->load($product->getId())->getStockItem()->getIsInStock());
 
