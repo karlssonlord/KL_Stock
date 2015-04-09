@@ -10,4 +10,4 @@ php n98-magerun.phar install \
     --installationFolder="src/" \
     --baseUrl="http://localhost:8001/"
 
-php -S localhost:8001 -t src/
+php -S localhost:8001 -t src/ &
