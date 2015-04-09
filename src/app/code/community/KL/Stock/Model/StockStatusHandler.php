@@ -25,13 +25,16 @@ class KL_Stock_Model_StockStatusHandler
      */
     private function fixProducts()
     {
+        Mage::log('KL_Stock job initiated', null, 'kl_stock.log', true);
         // Run through all configurable products that have stock status: is_in_stock 0
         foreach ($this->getConfigurableProducts() as $product) {
             $stockItem = $product->load($product->getId())->getStockItem();
             if ($this->statusIsNotInStock($stockItem) and $this->hasBabyProductInStock($product)) {
                 $this->correctStockStatusFor($stockItem);
+                Mage::log($product->getName() . ' had its status updated', null, 'kl_stock.log', true);
             }
         }
+        Mage::log('KL_Stock ran successfully', null, 'kl_stock.log', true);
         return $this;
     }
 
