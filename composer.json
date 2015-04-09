@@ -6,7 +6,7 @@
         "MageTest/Manager": "dev-Add-php-provider-with-faker-capabilites",
         "mockery/mockery": "0.9.*",
         "magento/core": "~1.9",
-        "bragento/magento-composer-installer": "~1.1"
+        "magento-hackathon/magento-composer-installer": "~3.0"
     },
     "authors": [
         {
@@ -22,6 +22,10 @@
         {
             "type": "vcs",
             "url": "git@github.com:dwickstrom/Manager.git"
+        },
+        {
+          "type": "composer",
+          "url": "http://packages.firegento.com"
         }
     ],
     "autoload": {
