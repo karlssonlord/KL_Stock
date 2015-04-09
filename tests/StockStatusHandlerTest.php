@@ -18,62 +18,62 @@ class StockStatusHandlerTest extends PHPUnit_Framework_TestCase
         Factory::clear();
     }
 
-//    /** @test */
-//    public function it_runs_through_a_collection_of_configurable_products_and_corrects_statuses()
-//    {
-//        /**
-//         * Create a simple and associate it with a configurable product. Both out of stock.
-//         */
-//        $simpleProduct = Factory::make('catalog/product', [
-//            'color' => 3,
-//            'visibility' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE,
-//        ]);
-//        $simpleProduct->save();
-//        $stockItem = Mage::getModel('cataloginventory/stock_item')->loadByProduct($simpleProduct);
-//        $stockItem->setManageStock(1);
-//        $stockItem->save();
-//
-//        $this->assertEquals(0, $simpleProduct->getStockItem()->getQty());
-//
-//        $configurableProduct = Factory::make('catalog/product', [
-//            'type_id' => Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE,
-//            'visibility' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-//            'name' => 'Testhans',
-//            'stock_data' => array(
-//                'use_config_manage_stock' => 0,
-//                'manage_stock' => 1,
-//                'is_in_stock' => 0
-//            )
-//        ]);
-//
-//        $product = $this->associateSimpleWithConfigurable($configurableProduct, $simpleProduct);
-//
-//        /**
-//         * Check the configurable product is not in stock
-//         */
-//        $this->assertEquals('Testhans', $product->getName());
-//        $stock = $product->getStockItem();
-//        $this->assertEquals(0, $stock->getQty());
-//
-//        /**
-//         * Put the simple product back in stock. Check for correct state.
-//         */
-//        $stockItem = $simpleProduct->getStockItem();
-//        $stockItem->setQty(1);
-//        $stockItem->setIsInStock(1);
-//        $stockItem->save();
-//        $this->assertEquals(1, $simpleProduct->getStockItem()->getIsInStock());
-//        $this->assertEquals(0, $product->getStockItem()->getIsInStock());
-//
-//        /**
-//         *  Now run the machine to help correct the "In Stock"-status for the configurable product
-//         */
-//        (new KL_Stock_Model_StockStatusHandler)->whenItsTimeToFixStockStatuses();
-//
-//        $this->assertEquals(1, $product->load($product->getId())->getStockItem()->getIsInStock());
-//
-//
-//    }
+    /** @test */
+    public function it_runs_through_a_collection_of_configurable_products_and_corrects_statuses()
+    {
+        /**
+         * Create a simple and associate it with a configurable product. Both out of stock.
+         */
+        $simpleProduct = Factory::make('catalog/product', [
+            'color' => 3,
+            'visibility' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE,
+        ]);
+        $simpleProduct->save();
+        $stockItem = Mage::getModel('cataloginventory/stock_item')->loadByProduct($simpleProduct);
+        $stockItem->setManageStock(1);
+        $stockItem->save();
+
+        $this->assertEquals(0, $simpleProduct->getStockItem()->getQty());
+
+        $configurableProduct = Factory::make('catalog/product', [
+            'type_id' => Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE,
+            'visibility' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+            'name' => 'Testhans',
+            'stock_data' => array(
+                'use_config_manage_stock' => 0,
+                'manage_stock' => 1,
+                'is_in_stock' => 0
+            )
+        ]);
+
+        $product = $this->associateSimpleWithConfigurable($configurableProduct, $simpleProduct);
+
+        /**
+         * Check the configurable product is not in stock
+         */
+        $this->assertEquals('Testhans', $product->getName());
+        $stock = $product->getStockItem();
+        $this->assertEquals(0, $stock->getQty());
+
+        /**
+         * Put the simple product back in stock. Check for correct state.
+         */
+        $stockItem = $simpleProduct->getStockItem();
+        $stockItem->setQty(1);
+        $stockItem->setIsInStock(1);
+        $stockItem->save();
+        $this->assertEquals(1, $simpleProduct->getStockItem()->getIsInStock());
+        $this->assertEquals(0, $product->getStockItem()->getIsInStock());
+
+        /**
+         *  Now run the machine to help correct the "In Stock"-status for the configurable product
+         */
+        (new KL_Stock_Model_StockStatusHandler)->whenItsTimeToFixStockStatuses();
+
+        $this->assertEquals(1, $product->load($product->getId())->getStockItem()->getIsInStock());
+
+
+    }
 
     /** @test */
     public function it_runs_through_a_collection_of_simple_products_and_corrects_statuses()
