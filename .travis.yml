@@ -9,6 +9,7 @@ branches:
 
 install:
     - composer install --prefer-source --no-interaction
+    - ./install.sh
 
 script:
     - vendor/bin/phpunit
