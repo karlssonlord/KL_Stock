@@ -36,13 +36,24 @@ class KL_Stock_ProductCollection
     /**
      * @return mixed
      */
-    public function getSimpleProducts()
+    public function getProducts()
     {
-        return $this->product
+//        return Mage::getModel('catalog/product')
+//            ->getCollection()
+//            ->joinField(
+//                'qty',
+//                'cataloginventory/stock_item',
+//                'qty',
+//                'product_id=entity_id',
+//                '{{table}}.stock_id=1',
+//                'left'
+//            )
+//            ->addAttributeToFilter('qty', array('eq' => 0))
+//            ->addAttributeToSelect('*')
+//        ;
+        return Mage::getModel('cataloginventory/stock_item')
             ->getCollection()
-            ->addAttributeToFilter('type_id', 'simple')
-            ->addAttributeToFilter('inventory_stock_availability', 0)
-            ->addAttributeToFilter('inventory_qty', array('gt' => 0))
-            ->addAttributeToSelect('*');
+            ->addQtyFilter('>', 0)
+            ;
     }
 } 

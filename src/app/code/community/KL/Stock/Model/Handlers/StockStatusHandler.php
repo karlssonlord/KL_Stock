@@ -39,8 +39,8 @@ class KL_Stock_Model_Handlers_StockStatusHandler
     public function whenItsTimeToFixStockStatuses()
     {
         return $this
-            ->handleSimpleProducts()
-            ->handleConfigurableProducts();
+            ->fixProducts()
+            ;
     }
 
     /**
@@ -48,50 +48,85 @@ class KL_Stock_Model_Handlers_StockStatusHandler
      *
      * @return $this
      */
-    private function handleSimpleProducts()
+    private function fixProducts()
     {
-        foreach ($this->collection->getSimpleProducts() as $product) {
-            $stockItem = $this->stockItem->loadByProduct($product);
-            if (!$stockItem->getIsInStock() && $stockItem->getQty() > 0) {
-                $this->correctStockStatus($product);
+        // Run through all configurable products that have stock status: is_in_stock 0
+        foreach ($this->getConfigurableProducts() as $product) {
+            $stockItem = $product->load($product->getId())->getStockItem();
+            if ($this->statusIsNotInStock($stockItem) and $this->hasBabyProductInStock($product)) {
+                $this->correctStockStatusFor($stockItem);
             }
         }
-
         return $this;
     }
 
     /**
-     *  Fix statuses for configurable products
-     *
-     * @return $this
+     * @return mixed
      */
-    private function handleConfigurableProducts()
+    private function getConfigurableProducts()
     {
-        foreach ($this->collection->getConfigurableProducts() as $product) {
-            $childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null, $product);
-            foreach ($childProducts as $childProduct) {
-                $childStockItem = $this->stockItem->loadByProduct($childProduct);
-                if ($childStockItem->getQty() > 0) {
-                    $this->correctStockStatus($product);
-                }
-            }
-        }
-
-        return $this;
+        return Mage::getModel('catalog/product')
+            ->getCollection()
+            ->addAttributeToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
+            ->addAttributeToSelect('type_id')
+            ;
     }
 
     /**
-     * @param $product
+     * @param $stockItem
+     * @return bool
      */
-    private function correctStockStatus($product)
+    private function correctStockStatusFor($stockItem)
     {
-        try {
-            $parentStockItem = $this->stockItem->loadByProduct($product);
-            $parentStockItem->setIsInStock(1);
-            $parentStockItem->save();
-        } catch (Exception $e) {
-            Mage::log($e->getMessage(), null, 'exception.log', true);
+        $stockItem->setIsInStock(1);
+        return $stockItem->save();
+    }
+
+    /**
+     * @param $stockItem
+     * @return bool
+     */
+    private function statusIsNotInStock($stockItem)
+    {
+        return $stockItem->getIsInStock() == 0;
+    }
+
+    /**
+     * @param $configurableProduct
+     * @return bool
+     */
+    private function hasBabyProductInStock($configurableProduct)
+    {
+        foreach ($this->getAssociatedProductsFor($configurableProduct) as $simpleProduct) {
+            if ($this->simpleProductIsSalable($simpleProduct)) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    /**
+     * @param $configurableProduct
+     * @return mixed
+     */
+    private function getAssociatedProductsFor($configurableProduct)
+    {
+        return Mage::getModel('catalog/product_type_configurable')->setProduct($configurableProduct)
+            ->getUsedProductCollection()
+            ->addAttributeToSelect('*')
+            ->addFilterByRequiredOptions()
+            ;
+    }
+
+    /**
+     * @param $simpleProduct
+     * @return bool
+     */
+    private function simpleProductIsSalable($simpleProduct)
+    {
+        $stockItem = $simpleProduct->getStockItem();
+        if ($stockItem->getIsInStock()) return true;
+        return false;
     }
 
 }

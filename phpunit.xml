@@ -12,6 +12,7 @@
     <testsuites>
         <testsuite name="Default Test Suite">
             <directory suffix=".php">./tests/</directory>
+            <exclude>./tests/fixtures/</exclude>
         </testsuite>
     </testsuites>
 </phpunit>
