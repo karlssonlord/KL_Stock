@@ -2,7 +2,7 @@
     "name": "karlssonlord/stock",
     "description": "This module help managing of products stock status flag",
     "require-dev": {
-        "phpunit/phpunit": "~4.6",
+        "phpunit/phpunit": "~4.5",
         "MageTest/Manager": "dev-Add-php-provider-with-faker-capabilites",
         "magento-hackathon/magento-composer-installer": "*",
         "magento/core": "~1.9"
