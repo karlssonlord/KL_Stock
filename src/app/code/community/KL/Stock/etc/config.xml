@@ -7,9 +7,9 @@
     </modules>
     <global>
         <helpers>
-            <rulemailer>
+            <kl_stock>
                 <class>KL_Stock_Helper</class>
-            </rulemailer>
+            </kl_stock>
         </helpers>
         <models>
             <kl_stock>
