@@ -49,6 +49,9 @@ class KL_Stock_Model_StockStatusHandler
             if ($this->statusIsNotInStock($stockItem) and $this->hasBabyProductInStock($product)) {
                 $this->correctStockStatusFor($stockItem);
                 Mage::log($product->getName() . ' had its status updated', null, 'kl_stock.log', true);
+            } else if ($this->statusIsInStock($stockItem) and !$this->hasBabyProductInStock($product)) {
+                $this->correctStockStatusFor($stockItem, 0);
+                Mage::log($product->getName() . ' had its status updated', null, 'kl_stock.log', true);
             }
         }
         return $this;
@@ -68,11 +71,12 @@ class KL_Stock_Model_StockStatusHandler
 
     /**
      * @param $stockItem
+     * @param $value
      * @return bool
      */
-    private function correctStockStatusFor($stockItem)
+    private function correctStockStatusFor($stockItem, $value = 1)
     {
-        $stockItem->setIsInStock(1);
+        $stockItem->setIsInStock($value);
         return $stockItem->save();
     }
 
@@ -83,6 +87,15 @@ class KL_Stock_Model_StockStatusHandler
     private function statusIsNotInStock($stockItem)
     {
         return $stockItem->getIsInStock() == 0;
+    }
+
+    /**
+     * @param $stockItem
+     * @return bool
+     */
+    private function statusIsInStock($stockItem)
+    {
+        return $stockItem->getIsInStock() == 1;
     }
 
     /**
