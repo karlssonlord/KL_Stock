@@ -28,10 +28,20 @@ class KL_Stock_Model_StockStatusHandler
     {
         foreach ($this->getSimpleProducts() as $simpleProduct) {
             $stockItem = $simpleProduct->load($simpleProduct->getId())->getStockItem();
+
             if ($this->statusIsNotInStock($stockItem) and $stockItem->getQty() > 0) {
                 $this->correctStockStatusFor($stockItem);
                 Mage::log($simpleProduct->getName() . ' had its status updated', null, 'kl_stock.log', true);
             }
+
+            /**
+             * Mark stock items as out of stock if qty is less than 1
+             */
+            if ($this->statusIsInStock($stockItem) and $stockItem->getQty() < 1) {
+                $this->correctStockStatusFor($stockItem, 0);
+                Mage::log($simpleProduct->getName() . ' had its status updated, set to out of stock since the qty is < 1', null, 'kl_stock.log', true);
+            }
+
         }
         return $this;
     }
