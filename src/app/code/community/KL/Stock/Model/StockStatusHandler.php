@@ -96,7 +96,11 @@ class KL_Stock_Model_StockStatusHandler
      */
     private function statusIsNotInStock($stockItem)
     {
-        return $stockItem->getIsInStock() == 0;
+        if ($stockItem->getData('is_in_stock') == '0') {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -105,7 +109,11 @@ class KL_Stock_Model_StockStatusHandler
      */
     private function statusIsInStock($stockItem)
     {
-        return $stockItem->getIsInStock() == 1;
+        if ($stockItem->getData('is_in_stock') == '1') {
+            return true;
+        }
+
+        return false;
     }
 
     /**
